@@ -42,23 +42,27 @@ export class Player extends Character implements CurrentGamerInterface {
         let x = 0;
         let y = 0;
         if (activeEvents.get(UserInputEvent.MoveUp)) {
-            y = - moveAmount;
+            y = - 1;
             direction = PlayerAnimationDirections.Up;
             moving = true;
         } else if (activeEvents.get(UserInputEvent.MoveDown)) {
-            y = moveAmount;
+            y = 1;
             direction = PlayerAnimationDirections.Down;
             moving = true;
         }
         if (activeEvents.get(UserInputEvent.MoveLeft)) {
-            x = -moveAmount;
+            x = -1; 
             direction = PlayerAnimationDirections.Left;
             moving = true;
         } else if (activeEvents.get(UserInputEvent.MoveRight)) {
-            x = moveAmount;
+            x = 1;
             direction = PlayerAnimationDirections.Right;
             moving = true;
         }
+        //normalize this shit first!
+        let length = Math.sqrt(x*x + y*y);
+        x/=length * moveAmount;
+        y/=length * moveAmount;
         if (x !== 0 || y !== 0) {
             this.move(x, y);
             this.emit(hasMovedEventName, {moving, direction, x: this.x, y: this.y});
